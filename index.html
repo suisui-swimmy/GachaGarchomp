@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7fbff" />
+    <title>GachaGarchomp</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="machine-stage" aria-labelledby="app-title">
+        <div class="title-block">
+          <p class="brand">GachaGarchomp</p>
+          <h1 id="app-title">今日のメガシンカを引く</h1>
+        </div>
+
+        <div class="gacha-machine" id="gachaMachine" data-state="idle">
+          <div class="machine-shadow" aria-hidden="true"></div>
+          <img class="part character-layer body-closed" src="./assets/garchomp-body.svg" alt="" />
+          <img class="part character-layer body-open" src="./assets/garchomp-mouthopen.svg" alt="" />
+          <img class="part character-layer arm-idle" src="./assets/garchomp-arm-idle.svg" alt="" />
+          <img class="part character-layer arm-pulled" src="./assets/garchomp-arm-pulled.svg" alt="" />
+          <img class="part sparkle sparkle-a" src="./assets/sparkle.svg" alt="" />
+          <img class="part sparkle sparkle-b" src="./assets/sparkle.svg" alt="" />
+          <img class="part ball" src="./assets/pokeball-close.svg" alt="" />
+
+          <button class="lever-hit-area" id="leverButton" type="button" aria-label="ガチャを引く"></button>
+        </div>
+
+        <div class="action-row">
+          <button class="primary-button" id="drawButton" type="button">
+            <span class="button-label">引く</span>
+            <span class="button-loading">抽選中</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="result-panel" id="resultPanel" aria-live="polite">
+        <p class="result-kicker">今日のメガシンカ</p>
+        <h2 id="resultName">まだ未抽選</h2>
+        <img class="result-sprite" id="resultSprite" src="" alt="" />
+        <p id="resultText">レギュレーションM-Aの排出プールを読み込み中です。</p>
+        <div class="party-list" id="partyList" aria-label="抽選詳細"></div>
+      </section>
+    </main>
+
+    <img class="screen-flash-effect" id="screenFlashEffect" src="./assets/pokeball-open-effect.svg" alt="" aria-hidden="true" />
+    <div class="screen-whiteout" id="screenWhiteout" aria-hidden="true"></div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
