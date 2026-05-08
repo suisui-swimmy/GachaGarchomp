@@ -14,7 +14,7 @@
   --shadow: 0 8px 0 rgba(41, 44, 24, 0.42);
   --radius: 6px;
   --font-pixel: "DotGothic16", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
-  --stage-size: min(86vw, 374px, calc(100dvh - 320px));
+  --stage-size: min(80vw, 356px, calc(100dvh - 320px));
   --ball-open-offset-x: -49.375%;
   --ball-open-offset-y: -55.14%;
   --flash-origin-x: 50vw;
@@ -97,7 +97,7 @@ h1 {
 
 .gacha-machine {
   position: relative;
-  width: max(232px, var(--stage-size));
+  width: max(220px, var(--stage-size));
   aspect-ratio: 1;
   margin: 0 auto;
   touch-action: manipulation;
@@ -396,8 +396,9 @@ h1 {
 }
 
 .share-button {
-  min-width: 64px;
+  min-width: 72px;
   min-height: 34px;
+  padding: 0 10px;
   border: 2px solid var(--gb-ink);
   border-radius: var(--radius);
   color: var(--gb-ink);
@@ -405,6 +406,16 @@ h1 {
   cursor: pointer;
   font-size: 0.8rem;
   text-shadow: none;
+}
+
+.share-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.share-button:focus-visible {
+  outline: 3px solid rgba(29, 50, 104, 0.72);
+  outline-offset: 3px;
 }
 
 .gacha-machine[data-state="dispensing"] .character-layer {
@@ -680,39 +691,6 @@ body.is-whiteout-exiting .screen-whiteout {
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
-  }
-}
-
-@media (min-width: 760px) {
-  .app-shell {
-    width: min(100%, 920px);
-    min-height: 100vh;
-    grid-template-columns: minmax(380px, 520px) minmax(300px, 360px);
-    align-items: center;
-    justify-content: center;
-    gap: 34px;
-    padding: 34px;
-  }
-
-  .result-panel {
-    align-self: auto;
-  }
-
-  .gacha-machine {
-    width: min(100%, 420px);
-    transform: none;
-  }
-
-  .result-sprite {
-    width: min(210px, 48%);
-  }
-
-  .result-panel p {
-    font-size: 0.94rem;
-  }
-
-  .party-chip {
-    font-size: 0.84rem;
   }
 }
 
