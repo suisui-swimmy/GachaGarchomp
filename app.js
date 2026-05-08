@@ -15,6 +15,7 @@ const BALL_END_POINT = {
 };
 
 const OPEN_BALL_PREVIEW_MS = 560;
+const IDLE_BEFORE_REPULL_MS = 420;
 const DISPENSE_BALL_MIN_MS = 1180;
 const DISPENSE_BALL_FALLBACK_MS = 1400;
 const FLASH_EFFECT_WHITE_RADIUS = 50;
@@ -33,6 +34,9 @@ const resultName = document.querySelector("#resultName");
 const resultSprite = document.querySelector("#resultSprite");
 const resultText = document.querySelector("#resultText");
 const partyList = document.querySelector("#partyList");
+const shareXButton = document.querySelector("#shareXButton");
+const shareDiscordButton = document.querySelector("#shareDiscordButton");
+const shareUrlButton = document.querySelector("#shareUrlButton");
 const closedBallElement = document.querySelector(".ball-closed");
 const openBallElement = document.querySelector(".ball-open");
 const screenFlashEffect = document.querySelector("#screenFlashEffect");
@@ -40,6 +44,7 @@ const screenFlashEffect = document.querySelector("#screenFlashEffect");
 let isDrawing = false;
 let lastApiName = "";
 let gachaPool = [];
+let currentResult = null;
 let activePoolLabel = "レギュレーションM-A";
 
 function setAssetSources() {
@@ -88,6 +93,10 @@ function buildGachaPool(sprites, poolConfig) {
     .filter(Boolean);
 }
 
+function findResultByApiName(apiName) {
+  return gachaPool.find((result) => result.apiName === apiName) || null;
+}
+
 async function loadGachaPool() {
   const [sprites, poolConfig] = await Promise.all([loadJson(DATA_SOURCES.sprites), loadJson(DATA_SOURCES.pool)]);
   activePoolLabel = poolConfig.label || poolConfig.regulation || activePoolLabel;
@@ -100,6 +109,11 @@ async function loadGachaPool() {
   resultName.textContent = "準備OK";
   resultText.textContent = `${activePoolLabel}で使えるメガシンカ ${gachaPool.length}種類から抽選します。`;
   renderChips(["M-A", `${gachaPool.length}種類`, "weight編集対応"]);
+}
+
+function getResultFromUrl() {
+  const apiName = new URLSearchParams(window.location.search).get("result");
+  return apiName ? findResultByApiName(apiName) : null;
 }
 
 function pickResult() {
@@ -142,7 +156,76 @@ function renderChips(labels) {
   );
 }
 
+function updateShareControls() {
+  const canShare = Boolean(currentResult);
+  shareXButton.disabled = !canShare;
+  shareDiscordButton.disabled = !canShare;
+  shareUrlButton.disabled = !canShare;
+}
+
+function buildResultUrl() {
+  const url = new URL(window.location.href);
+
+  if (currentResult) {
+    url.searchParams.set("result", currentResult.apiName);
+  } else {
+    url.searchParams.delete("result");
+  }
+
+  return url.toString();
+}
+
+function buildShareText() {
+  if (!currentResult) {
+    return "GachaGarchompで今日のメガシンカを引こう！";
+  }
+
+  return `今日のメガシンカは${currentResult.name}！\n${activePoolLabel}で排出されました。\n#GachaGarchomp`;
+}
+
+async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch (error) {
+      console.warn("Clipboard API failed. Falling back to textarea copy.", error);
+    }
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.select();
+  const copied = document.execCommand("copy");
+  textarea.remove();
+
+  if (!copied) {
+    throw new Error("Copy command failed.");
+  }
+}
+
+function showShareFeedback(button, label) {
+  const defaultLabel = button.textContent;
+  button.textContent = label;
+  window.setTimeout(() => {
+    button.textContent = defaultLabel;
+  }, 1100);
+}
+
+function syncResultUrl() {
+  if (!currentResult) {
+    return;
+  }
+
+  window.history.replaceState(null, "", buildResultUrl());
+}
+
 function renderResult(result) {
+  currentResult = result;
   resultName.textContent = result.name;
   resultSprite.src = result.src;
   resultSprite.alt = result.name;
@@ -152,6 +235,8 @@ function renderResult(result) {
   resultPanel.classList.remove("is-entering");
   void resultPanel.offsetWidth;
   resultPanel.classList.add("is-entering");
+  updateShareControls();
+  syncResultUrl();
 }
 
 function setBusy(nextBusy) {
@@ -236,10 +321,16 @@ async function drawGacha() {
   }
 
   setBusy(true);
+  const isRedraw = machine.dataset.state === "result";
   const result = pickResult();
   resultPanel.classList.remove("has-result", "is-entering");
   document.body.classList.remove("is-flashing", "is-whiteout-exiting");
 
+  machine.dataset.state = "idle";
+  if (isRedraw) {
+    await waitForNextPaint();
+    await wait(IDLE_BEFORE_REPULL_MS);
+  }
   machine.dataset.state = "pulled";
   await wait(300);
   machine.dataset.state = "pulling";
@@ -266,9 +357,16 @@ async function init() {
   setAssetSources();
   drawButton.disabled = true;
   leverButton.disabled = true;
+  updateShareControls();
 
   try {
     await Promise.all([preloadImage(ASSETS.ballClosed), preloadImage(ASSETS.ballOpen), preloadImage(ASSETS.ballOpenEffect), loadGachaPool()]);
+    const urlResult = getResultFromUrl();
+    if (urlResult) {
+      lastApiName = urlResult.apiName;
+      machine.dataset.state = "result";
+      renderResult(urlResult);
+    }
   } catch (error) {
     console.error(error);
     resultName.textContent = "読み込み失敗";
@@ -279,6 +377,66 @@ async function init() {
   }
 }
 
+function shareToX() {
+  if (!currentResult) {
+    return;
+  }
+
+  const intentUrl = new URL("https://twitter.com/intent/tweet");
+  intentUrl.searchParams.set("text", buildShareText());
+  intentUrl.searchParams.set("url", buildResultUrl());
+  window.open(intentUrl.toString(), "_blank", "noopener,noreferrer");
+}
+
+async function shareToDiscord() {
+  if (!currentResult) {
+    return;
+  }
+
+  const text = buildShareText();
+  const url = buildResultUrl();
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "GachaGarchomp",
+        text,
+        url,
+      });
+      return;
+    } catch (error) {
+      if (error.name === "AbortError") {
+        return;
+      }
+    }
+  }
+
+  try {
+    await copyText(`${text}\n${url}`);
+    showShareFeedback(shareDiscordButton, "コピー済");
+  } catch (error) {
+    console.error(error);
+    showShareFeedback(shareDiscordButton, "失敗");
+  }
+}
+
+async function copyResultUrl() {
+  if (!currentResult) {
+    return;
+  }
+
+  try {
+    await copyText(buildResultUrl());
+    showShareFeedback(shareUrlButton, "コピー済");
+  } catch (error) {
+    console.error(error);
+    showShareFeedback(shareUrlButton, "失敗");
+  }
+}
+
 drawButton.addEventListener("click", drawGacha);
 leverButton.addEventListener("click", drawGacha);
+shareXButton.addEventListener("click", shareToX);
+shareDiscordButton.addEventListener("click", shareToDiscord);
+shareUrlButton.addEventListener("click", copyResultUrl);
 init();
