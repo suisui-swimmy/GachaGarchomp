@@ -1,0 +1,653 @@
+[
+  {
+    "file": "3-mega.png",
+    "src": "./assets/sprites/3-mega.png",
+    "name": "メガフシギバナ",
+    "speciesName": "フシギバナ",
+    "apiName": "venusaur-mega"
+  },
+  {
+    "file": "6-mega-x.png",
+    "src": "./assets/sprites/6-mega-x.png",
+    "name": "メガリザードンＸ",
+    "speciesName": "リザードン",
+    "apiName": "charizard-mega-x"
+  },
+  {
+    "file": "6-mega-y.png",
+    "src": "./assets/sprites/6-mega-y.png",
+    "name": "メガリザードンＹ",
+    "speciesName": "リザードン",
+    "apiName": "charizard-mega-y"
+  },
+  {
+    "file": "9-mega.png",
+    "src": "./assets/sprites/9-mega.png",
+    "name": "メガカメックス",
+    "speciesName": "カメックス",
+    "apiName": "blastoise-mega"
+  },
+  {
+    "file": "15-mega.png",
+    "src": "./assets/sprites/15-mega.png",
+    "name": "メガスピアー",
+    "speciesName": "スピアー",
+    "apiName": "beedrill-mega"
+  },
+  {
+    "file": "18-mega.png",
+    "src": "./assets/sprites/18-mega.png",
+    "name": "メガピジョット",
+    "speciesName": "ピジョット",
+    "apiName": "pidgeot-mega"
+  },
+  {
+    "file": "26-mega-x.png",
+    "src": "./assets/sprites/26-mega-x.png",
+    "name": "メガライチュウX",
+    "speciesName": "ライチュウ",
+    "apiName": "raichu-mega-x"
+  },
+  {
+    "file": "26-mega-y.png",
+    "src": "./assets/sprites/26-mega-y.png",
+    "name": "メガライチュウY",
+    "speciesName": "ライチュウ",
+    "apiName": "raichu-mega-y"
+  },
+  {
+    "file": "36-mega.png",
+    "src": "./assets/sprites/36-mega.png",
+    "name": "メガピクシー",
+    "speciesName": "ピクシー",
+    "apiName": "clefable-mega"
+  },
+  {
+    "file": "65-mega.png",
+    "src": "./assets/sprites/65-mega.png",
+    "name": "メガフーディン",
+    "speciesName": "フーディン",
+    "apiName": "alakazam-mega"
+  },
+  {
+    "file": "71-mega.png",
+    "src": "./assets/sprites/71-mega.png",
+    "name": "メガウツボット",
+    "speciesName": "ウツボット",
+    "apiName": "victreebel-mega"
+  },
+  {
+    "file": "80-mega.png",
+    "src": "./assets/sprites/80-mega.png",
+    "name": "メガヤドラン",
+    "speciesName": "ヤドラン",
+    "apiName": "slowbro-mega"
+  },
+  {
+    "file": "94-mega.png",
+    "src": "./assets/sprites/94-mega.png",
+    "name": "メガゲンガー",
+    "speciesName": "ゲンガー",
+    "apiName": "gengar-mega"
+  },
+  {
+    "file": "115-mega.png",
+    "src": "./assets/sprites/115-mega.png",
+    "name": "メガガルーラ",
+    "speciesName": "ガルーラ",
+    "apiName": "kangaskhan-mega"
+  },
+  {
+    "file": "121-mega.png",
+    "src": "./assets/sprites/121-mega.png",
+    "name": "メガスターミー",
+    "speciesName": "スターミー",
+    "apiName": "starmie-mega"
+  },
+  {
+    "file": "127-mega.png",
+    "src": "./assets/sprites/127-mega.png",
+    "name": "メガカイロス",
+    "speciesName": "カイロス",
+    "apiName": "pinsir-mega"
+  },
+  {
+    "file": "130-mega.png",
+    "src": "./assets/sprites/130-mega.png",
+    "name": "メガギャラドス",
+    "speciesName": "ギャラドス",
+    "apiName": "gyarados-mega"
+  },
+  {
+    "file": "142-mega.png",
+    "src": "./assets/sprites/142-mega.png",
+    "name": "メガプテラ",
+    "speciesName": "プテラ",
+    "apiName": "aerodactyl-mega"
+  },
+  {
+    "file": "149-mega.png",
+    "src": "./assets/sprites/149-mega.png",
+    "name": "メガカイリュー",
+    "speciesName": "カイリュー",
+    "apiName": "dragonite-mega"
+  },
+  {
+    "file": "150-mega-x.png",
+    "src": "./assets/sprites/150-mega-x.png",
+    "name": "メガミュウツーＸ",
+    "speciesName": "ミュウツー",
+    "apiName": "mewtwo-mega-x"
+  },
+  {
+    "file": "150-mega-y.png",
+    "src": "./assets/sprites/150-mega-y.png",
+    "name": "メガミュウツーＹ",
+    "speciesName": "ミュウツー",
+    "apiName": "mewtwo-mega-y"
+  },
+  {
+    "file": "154-mega.png",
+    "src": "./assets/sprites/154-mega.png",
+    "name": "メガメガニウム",
+    "speciesName": "メガニウム",
+    "apiName": "meganium-mega"
+  },
+  {
+    "file": "160-mega.png",
+    "src": "./assets/sprites/160-mega.png",
+    "name": "メガオーダイル",
+    "speciesName": "オーダイル",
+    "apiName": "feraligatr-mega"
+  },
+  {
+    "file": "181-mega.png",
+    "src": "./assets/sprites/181-mega.png",
+    "name": "メガデンリュウ",
+    "speciesName": "デンリュウ",
+    "apiName": "ampharos-mega"
+  },
+  {
+    "file": "208-mega.png",
+    "src": "./assets/sprites/208-mega.png",
+    "name": "メガハガネール",
+    "speciesName": "ハガネール",
+    "apiName": "steelix-mega"
+  },
+  {
+    "file": "212-mega.png",
+    "src": "./assets/sprites/212-mega.png",
+    "name": "メガハッサム",
+    "speciesName": "ハッサム",
+    "apiName": "scizor-mega"
+  },
+  {
+    "file": "214-mega.png",
+    "src": "./assets/sprites/214-mega.png",
+    "name": "メガヘラクロス",
+    "speciesName": "ヘラクロス",
+    "apiName": "heracross-mega"
+  },
+  {
+    "file": "227-mega.png",
+    "src": "./assets/sprites/227-mega.png",
+    "name": "メガエアームド",
+    "speciesName": "エアームド",
+    "apiName": "skarmory-mega"
+  },
+  {
+    "file": "229-mega.png",
+    "src": "./assets/sprites/229-mega.png",
+    "name": "メガヘルガー",
+    "speciesName": "ヘルガー",
+    "apiName": "houndoom-mega"
+  },
+  {
+    "file": "248-mega.png",
+    "src": "./assets/sprites/248-mega.png",
+    "name": "メガバンギラス",
+    "speciesName": "バンギラス",
+    "apiName": "tyranitar-mega"
+  },
+  {
+    "file": "254-mega.png",
+    "src": "./assets/sprites/254-mega.png",
+    "name": "メガジュカイン",
+    "speciesName": "ジュカイン",
+    "apiName": "sceptile-mega"
+  },
+  {
+    "file": "257-mega.png",
+    "src": "./assets/sprites/257-mega.png",
+    "name": "メガバシャーモ",
+    "speciesName": "バシャーモ",
+    "apiName": "blaziken-mega"
+  },
+  {
+    "file": "260-mega.png",
+    "src": "./assets/sprites/260-mega.png",
+    "name": "メガラグラージ",
+    "speciesName": "ラグラージ",
+    "apiName": "swampert-mega"
+  },
+  {
+    "file": "282-mega.png",
+    "src": "./assets/sprites/282-mega.png",
+    "name": "メガサーナイト",
+    "speciesName": "サーナイト",
+    "apiName": "gardevoir-mega"
+  },
+  {
+    "file": "302-mega.png",
+    "src": "./assets/sprites/302-mega.png",
+    "name": "メガヤミラミ",
+    "speciesName": "ヤミラミ",
+    "apiName": "sableye-mega"
+  },
+  {
+    "file": "303-mega.png",
+    "src": "./assets/sprites/303-mega.png",
+    "name": "メガクチート",
+    "speciesName": "クチート",
+    "apiName": "mawile-mega"
+  },
+  {
+    "file": "306-mega.png",
+    "src": "./assets/sprites/306-mega.png",
+    "name": "メガボスゴドラ",
+    "speciesName": "ボスゴドラ",
+    "apiName": "aggron-mega"
+  },
+  {
+    "file": "308-mega.png",
+    "src": "./assets/sprites/308-mega.png",
+    "name": "メガチャーレム",
+    "speciesName": "チャーレム",
+    "apiName": "medicham-mega"
+  },
+  {
+    "file": "310-mega.png",
+    "src": "./assets/sprites/310-mega.png",
+    "name": "メガライボルト",
+    "speciesName": "ライボルト",
+    "apiName": "manectric-mega"
+  },
+  {
+    "file": "319-mega.png",
+    "src": "./assets/sprites/319-mega.png",
+    "name": "メガサメハダー",
+    "speciesName": "サメハダー",
+    "apiName": "sharpedo-mega"
+  },
+  {
+    "file": "323-mega.png",
+    "src": "./assets/sprites/323-mega.png",
+    "name": "メガバクーダ",
+    "speciesName": "バクーダ",
+    "apiName": "camerupt-mega"
+  },
+  {
+    "file": "334-mega.png",
+    "src": "./assets/sprites/334-mega.png",
+    "name": "メガチルタリス",
+    "speciesName": "チルタリス",
+    "apiName": "altaria-mega"
+  },
+  {
+    "file": "354-mega.png",
+    "src": "./assets/sprites/354-mega.png",
+    "name": "メガジュペッタ",
+    "speciesName": "ジュペッタ",
+    "apiName": "banette-mega"
+  },
+  {
+    "file": "358-mega.png",
+    "src": "./assets/sprites/358-mega.png",
+    "name": "メガチリーン",
+    "speciesName": "チリーン",
+    "apiName": "chimecho-mega"
+  },
+  {
+    "file": "359-mega-z.png",
+    "src": "./assets/sprites/359-mega-z.png",
+    "name": "メガアブソルZ",
+    "speciesName": "アブソル",
+    "apiName": "absol-mega-z"
+  },
+  {
+    "file": "359-mega.png",
+    "src": "./assets/sprites/359-mega.png",
+    "name": "メガアブソル",
+    "speciesName": "アブソル",
+    "apiName": "absol-mega"
+  },
+  {
+    "file": "362-mega.png",
+    "src": "./assets/sprites/362-mega.png",
+    "name": "メガオニゴーリ",
+    "speciesName": "オニゴーリ",
+    "apiName": "glalie-mega"
+  },
+  {
+    "file": "373-mega.png",
+    "src": "./assets/sprites/373-mega.png",
+    "name": "メガボーマンダ",
+    "speciesName": "ボーマンダ",
+    "apiName": "salamence-mega"
+  },
+  {
+    "file": "376-mega.png",
+    "src": "./assets/sprites/376-mega.png",
+    "name": "メガメタグロス",
+    "speciesName": "メタグロス",
+    "apiName": "metagross-mega"
+  },
+  {
+    "file": "380-mega.png",
+    "src": "./assets/sprites/380-mega.png",
+    "name": "メガラティアス",
+    "speciesName": "ラティアス",
+    "apiName": "latias-mega"
+  },
+  {
+    "file": "381-mega.png",
+    "src": "./assets/sprites/381-mega.png",
+    "name": "メガラティオス",
+    "speciesName": "ラティオス",
+    "apiName": "latios-mega"
+  },
+  {
+    "file": "384-mega.png",
+    "src": "./assets/sprites/384-mega.png",
+    "name": "メガレックウザ",
+    "speciesName": "レックウザ",
+    "apiName": "rayquaza-mega"
+  },
+  {
+    "file": "398-mega.png",
+    "src": "./assets/sprites/398-mega.png",
+    "name": "メガムクホーク",
+    "speciesName": "ムクホーク",
+    "apiName": "staraptor-mega"
+  },
+  {
+    "file": "428-mega.png",
+    "src": "./assets/sprites/428-mega.png",
+    "name": "メガミミロップ",
+    "speciesName": "ミミロップ",
+    "apiName": "lopunny-mega"
+  },
+  {
+    "file": "445-mega-z.png",
+    "src": "./assets/sprites/445-mega-z.png",
+    "name": "メガガブリアスZ",
+    "speciesName": "ガブリアス",
+    "apiName": "garchomp-mega-z"
+  },
+  {
+    "file": "445-mega.png",
+    "src": "./assets/sprites/445-mega.png",
+    "name": "メガガブリアス",
+    "speciesName": "ガブリアス",
+    "apiName": "garchomp-mega"
+  },
+  {
+    "file": "448-mega-z.png",
+    "src": "./assets/sprites/448-mega-z.png",
+    "name": "メガルカリオZ",
+    "speciesName": "ルカリオ",
+    "apiName": "lucario-mega-z"
+  },
+  {
+    "file": "448-mega.png",
+    "src": "./assets/sprites/448-mega.png",
+    "name": "メガルカリオ",
+    "speciesName": "ルカリオ",
+    "apiName": "lucario-mega"
+  },
+  {
+    "file": "460-mega.png",
+    "src": "./assets/sprites/460-mega.png",
+    "name": "メガユキノオー",
+    "speciesName": "ユキノオー",
+    "apiName": "abomasnow-mega"
+  },
+  {
+    "file": "475-mega.png",
+    "src": "./assets/sprites/475-mega.png",
+    "name": "メガエルレイド",
+    "speciesName": "エルレイド",
+    "apiName": "gallade-mega"
+  },
+  {
+    "file": "478-mega.png",
+    "src": "./assets/sprites/478-mega.png",
+    "name": "メガユキメノコ",
+    "speciesName": "ユキメノコ",
+    "apiName": "froslass-mega"
+  },
+  {
+    "file": "485-mega.png",
+    "src": "./assets/sprites/485-mega.png",
+    "name": "メガヒードラン",
+    "speciesName": "ヒードラン",
+    "apiName": "heatran-mega"
+  },
+  {
+    "file": "491-mega.png",
+    "src": "./assets/sprites/491-mega.png",
+    "name": "メガダークライ",
+    "speciesName": "ダークライ",
+    "apiName": "darkrai-mega"
+  },
+  {
+    "file": "500-mega.png",
+    "src": "./assets/sprites/500-mega.png",
+    "name": "メガエンブオー",
+    "speciesName": "エンブオー",
+    "apiName": "emboar-mega"
+  },
+  {
+    "file": "530-mega.png",
+    "src": "./assets/sprites/530-mega.png",
+    "name": "メガドリュウズ",
+    "speciesName": "ドリュウズ",
+    "apiName": "excadrill-mega"
+  },
+  {
+    "file": "531-mega.png",
+    "src": "./assets/sprites/531-mega.png",
+    "name": "メガタブンネ",
+    "speciesName": "タブンネ",
+    "apiName": "audino-mega"
+  },
+  {
+    "file": "545-mega.png",
+    "src": "./assets/sprites/545-mega.png",
+    "name": "メガペンドラー",
+    "speciesName": "ペンドラー",
+    "apiName": "scolipede-mega"
+  },
+  {
+    "file": "560-mega.png",
+    "src": "./assets/sprites/560-mega.png",
+    "name": "メガズルズキン",
+    "speciesName": "ズルズキン",
+    "apiName": "scrafty-mega"
+  },
+  {
+    "file": "604-mega.png",
+    "src": "./assets/sprites/604-mega.png",
+    "name": "メガシビルドン",
+    "speciesName": "シビルドン",
+    "apiName": "eelektross-mega"
+  },
+  {
+    "file": "609-mega.png",
+    "src": "./assets/sprites/609-mega.png",
+    "name": "メガシャンデラ",
+    "speciesName": "シャンデラ",
+    "apiName": "chandelure-mega"
+  },
+  {
+    "file": "623-mega.png",
+    "src": "./assets/sprites/623-mega.png",
+    "name": "メガゴルーグ",
+    "speciesName": "ゴルーグ",
+    "apiName": "golurk-mega"
+  },
+  {
+    "file": "652-mega.png",
+    "src": "./assets/sprites/652-mega.png",
+    "name": "メガブリガロン",
+    "speciesName": "ブリガロン",
+    "apiName": "chesnaught-mega"
+  },
+  {
+    "file": "655-mega.png",
+    "src": "./assets/sprites/655-mega.png",
+    "name": "メガマフォクシー",
+    "speciesName": "マフォクシー",
+    "apiName": "delphox-mega"
+  },
+  {
+    "file": "658-mega.png",
+    "src": "./assets/sprites/658-mega.png",
+    "name": "メガゲッコウガ",
+    "speciesName": "ゲッコウガ",
+    "apiName": "greninja-mega"
+  },
+  {
+    "file": "668-mega.png",
+    "src": "./assets/sprites/668-mega.png",
+    "name": "メガカエンジシ",
+    "speciesName": "カエンジシ",
+    "apiName": "pyroar-mega"
+  },
+  {
+    "file": "670-mega.png",
+    "src": "./assets/sprites/670-mega.png",
+    "name": "メガフラエッテ",
+    "speciesName": "フラエッテ",
+    "apiName": "floette-mega"
+  },
+  {
+    "file": "678-mega.png",
+    "src": "./assets/sprites/678-mega.png",
+    "name": "メガニャオニクス",
+    "speciesName": "ニャオニクス",
+    "apiName": "meowstic-mega"
+  },
+  {
+    "file": "687-mega.png",
+    "src": "./assets/sprites/687-mega.png",
+    "name": "メガカラマネロ",
+    "speciesName": "カラマネロ",
+    "apiName": "malamar-mega"
+  },
+  {
+    "file": "689-mega.png",
+    "src": "./assets/sprites/689-mega.png",
+    "name": "メガガメノデス",
+    "speciesName": "ガメノデス",
+    "apiName": "barbaracle-mega"
+  },
+  {
+    "file": "691-mega.png",
+    "src": "./assets/sprites/691-mega.png",
+    "name": "メガドラミドロ",
+    "speciesName": "ドラミドロ",
+    "apiName": "dragalge-mega"
+  },
+  {
+    "file": "701-mega.png",
+    "src": "./assets/sprites/701-mega.png",
+    "name": "メガルチャブル",
+    "speciesName": "ルチャブル",
+    "apiName": "hawlucha-mega"
+  },
+  {
+    "file": "718-mega.png",
+    "src": "./assets/sprites/718-mega.png",
+    "name": "メガジガルデ",
+    "speciesName": "ジガルデ",
+    "apiName": "zygarde-mega"
+  },
+  {
+    "file": "719-mega.png",
+    "src": "./assets/sprites/719-mega.png",
+    "name": "メガディアンシー",
+    "speciesName": "ディアンシー",
+    "apiName": "diancie-mega"
+  },
+  {
+    "file": "740-mega.png",
+    "src": "./assets/sprites/740-mega.png",
+    "name": "メガケケンカニ",
+    "speciesName": "ケケンカニ",
+    "apiName": "crabominable-mega"
+  },
+  {
+    "file": "768-mega.png",
+    "src": "./assets/sprites/768-mega.png",
+    "name": "メガグソクムシャ",
+    "speciesName": "グソクムシャ",
+    "apiName": "golisopod-mega"
+  },
+  {
+    "file": "780-mega.png",
+    "src": "./assets/sprites/780-mega.png",
+    "name": "メガジジーロン",
+    "speciesName": "ジジーロン",
+    "apiName": "drampa-mega"
+  },
+  {
+    "file": "801-mega.png",
+    "src": "./assets/sprites/801-mega.png",
+    "name": "メガマギアナ",
+    "speciesName": "マギアナ",
+    "apiName": "magearna-mega"
+  },
+  {
+    "file": "807-mega.png",
+    "src": "./assets/sprites/807-mega.png",
+    "name": "メガゼラオラ",
+    "speciesName": "ゼラオラ",
+    "apiName": "zeraora-mega"
+  },
+  {
+    "file": "870-mega.png",
+    "src": "./assets/sprites/870-mega.png",
+    "name": "メガタイレーツ",
+    "speciesName": "タイレーツ",
+    "apiName": "falinks-mega"
+  },
+  {
+    "file": "952-mega.png",
+    "src": "./assets/sprites/952-mega.png",
+    "name": "メガスコヴィラン",
+    "speciesName": "スコヴィラン",
+    "apiName": "scovillain-mega"
+  },
+  {
+    "file": "970-mega.png",
+    "src": "./assets/sprites/970-mega.png",
+    "name": "メガキラフロル",
+    "speciesName": "キラフロル",
+    "apiName": "glimmora-mega"
+  },
+  {
+    "file": "978-stretchy-mega.png",
+    "src": "./assets/sprites/978-stretchy-mega.png",
+    "name": "メガシャリタツ",
+    "speciesName": "シャリタツ",
+    "apiName": "tatsugiri-stretchy-mega"
+  },
+  {
+    "file": "998-mega.png",
+    "src": "./assets/sprites/998-mega.png",
+    "name": "メガセグレイブ",
+    "speciesName": "セグレイブ",
+    "apiName": "baxcalibur-mega"
+  }
+]
