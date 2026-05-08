@@ -1,17 +1,18 @@
 :root {
   color-scheme: light;
-  --bg: #f7fbff;
-  --ink: #162042;
-  --muted: #67708f;
-  --line: #d9e4f6;
-  --panel: rgba(255, 255, 255, 0.9);
-  --panel-strong: #ffffff;
-  --accent: #ff6b3d;
-  --accent-dark: #d94923;
-  --blue: #2d55d4;
-  --yellow: #ffd64d;
-  --shadow: 0 22px 70px rgba(33, 72, 140, 0.18);
-  --radius: 24px;
+  --bg: #11183f;
+  --ink: #fffdf0;
+  --muted: #cbd7ff;
+  --line: #fffdf0;
+  --panel: #18245c;
+  --panel-strong: #233276;
+  --accent: #ffcf4a;
+  --accent-dark: #f0832e;
+  --blue: #71d7ff;
+  --yellow: #ffef75;
+  --shadow: 0 14px 0 rgba(2, 7, 29, 0.34), 0 22px 56px rgba(0, 0, 0, 0.3);
+  --radius: 6px;
+  --font-pixel: "DotGothic16", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
   --ball-open-offset-x: -49.375%;
   --ball-open-offset-y: -55.14%;
   --flash-origin-x: 50vw;
@@ -32,10 +33,14 @@ body {
   min-height: 100vh;
   margin: 0;
   color: var(--ink);
-  font-family: "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
+  font-family: var(--font-pixel);
   background:
-    radial-gradient(circle at 50% 12%, rgba(95, 170, 255, 0.22), transparent 30rem),
-    linear-gradient(180deg, #f9fdff 0%, #e9f5ff 48%, #fff8e6 100%);
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 50% 8%, rgba(113, 215, 255, 0.26), transparent 22rem),
+    linear-gradient(180deg, #11183f 0%, #17205a 58%, #352657 100%);
+  background-size: 16px 16px, 16px 16px, auto, auto;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.36);
 }
 
 button {
@@ -66,10 +71,11 @@ button {
 
 .brand {
   margin: 0;
-  color: var(--blue);
-  font-size: 0.86rem;
-  font-weight: 800;
+  color: var(--yellow);
+  font-size: 0.88rem;
+  font-weight: 400;
   letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 h1,
@@ -79,8 +85,10 @@ p {
 }
 
 h1 {
-  font-size: clamp(1.7rem, 8vw, 2.5rem);
-  line-height: 1.05;
+  color: #ffffff;
+  font-size: clamp(1.62rem, 7.6vw, 2.42rem);
+  font-weight: 400;
+  line-height: 1.12;
   letter-spacing: 0;
 }
 
@@ -101,7 +109,7 @@ h1 {
   bottom: 7%;
   height: 12%;
   border-radius: 999px;
-  background: radial-gradient(ellipse at center, rgba(48, 87, 151, 0.25), rgba(48, 87, 151, 0));
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0));
   transform-origin: center;
   z-index: 0;
 }
@@ -152,7 +160,11 @@ h1 {
   z-index: 3;
   opacity: 0;
   transform: translate3d(-50%, -50%, 0) scale(0.22) rotate(0deg);
-  filter: drop-shadow(0 14px 12px rgba(22, 32, 66, 0.22));
+  filter: drop-shadow(0 10px 0 rgba(0, 0, 0, 0.22));
+}
+
+.ball-open {
+  opacity: 0;
 }
 
 .screen-flash-effect,
@@ -214,7 +226,7 @@ h1 {
 }
 
 .lever-hit-area:focus-visible {
-  outline: 4px solid rgba(255, 107, 61, 0.48);
+  outline: 4px solid rgba(255, 207, 74, 0.74);
   outline-offset: 8px;
 }
 
@@ -226,24 +238,26 @@ h1 {
 .primary-button {
   min-width: 178px;
   height: 58px;
-  border: 0;
-  border-radius: 999px;
-  color: #ffffff;
+  border: 3px solid #fffdf0;
+  border-radius: var(--radius);
+  color: #16111d;
   background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dark) 100%);
-  box-shadow: 0 14px 26px rgba(217, 73, 35, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.36);
+  box-shadow: 0 6px 0 #5d2a1d, 0 12px 0 rgba(2, 7, 29, 0.28);
   cursor: pointer;
-  font-size: 1.06rem;
-  font-weight: 800;
+  font-size: 1.16rem;
+  font-weight: 400;
   letter-spacing: 0;
-  transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease;
+  text-shadow: none;
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
 }
 
 .primary-button:active {
-  transform: translateY(2px) scale(0.98);
+  transform: translateY(5px);
+  box-shadow: 0 1px 0 #5d2a1d, 0 5px 0 rgba(2, 7, 29, 0.28);
 }
 
 .primary-button:focus-visible {
-  outline: 4px solid rgba(255, 107, 61, 0.34);
+  outline: 4px solid rgba(113, 215, 255, 0.8);
   outline-offset: 5px;
 }
 
@@ -268,24 +282,34 @@ h1 {
   width: 100%;
   min-height: 174px;
   padding: 18px;
-  border: 1px solid rgba(217, 228, 246, 0.9);
+  border: 3px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel);
   box-shadow: var(--shadow);
-  backdrop-filter: blur(16px);
   display: grid;
   gap: 8px;
+  position: relative;
+}
+
+.result-panel::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(255, 253, 240, 0.72);
+  border-radius: 2px;
+  pointer-events: none;
 }
 
 .result-kicker {
-  color: var(--accent-dark);
-  font-size: 0.78rem;
-  font-weight: 900;
+  color: var(--yellow);
+  font-size: 0.86rem;
+  font-weight: 400;
 }
 
 .result-panel h2 {
-  font-size: 1.46rem;
-  line-height: 1.15;
+  font-size: 1.48rem;
+  font-weight: 400;
+  line-height: 1.18;
 }
 
 .result-sprite {
@@ -294,7 +318,7 @@ h1 {
   aspect-ratio: 1;
   justify-self: center;
   object-fit: contain;
-  filter: drop-shadow(0 18px 24px rgba(33, 72, 140, 0.2));
+  filter: drop-shadow(0 12px 0 rgba(0, 0, 0, 0.18)) drop-shadow(0 18px 22px rgba(0, 0, 0, 0.18));
 }
 
 .result-panel.has-result .result-sprite {
@@ -303,8 +327,8 @@ h1 {
 
 .result-panel p {
   color: var(--muted);
-  font-size: 0.94rem;
-  line-height: 1.6;
+  font-size: 0.98rem;
+  line-height: 1.65;
 }
 
 .party-list {
@@ -318,12 +342,12 @@ h1 {
   max-width: 100%;
   min-height: 34px;
   padding: 7px 11px;
-  border: 1px solid rgba(45, 85, 212, 0.16);
-  border-radius: 999px;
-  color: #1f3c9b;
-  background: #edf4ff;
-  font-size: 0.86rem;
-  font-weight: 800;
+  border: 2px solid rgba(255, 253, 240, 0.8);
+  border-radius: 4px;
+  color: #fffdf0;
+  background: var(--panel-strong);
+  font-size: 0.88rem;
+  font-weight: 400;
   line-height: 1.2;
 }
 
@@ -363,12 +387,18 @@ h1 {
   opacity: 1;
 }
 
-.gacha-machine[data-state="dispensing"] .ball {
+.gacha-machine[data-state="dispensing"] .ball-closed {
   animation: dispenseBall 1180ms linear forwards;
 }
 
-.gacha-machine[data-state="opening"] .ball,
-.gacha-machine[data-state="flash"] .ball {
+.gacha-machine[data-state="dispensing"] .ball-open,
+.gacha-machine[data-state="opening"] .ball-closed,
+.gacha-machine[data-state="flash"] .ball-closed {
+  opacity: 0;
+}
+
+.gacha-machine[data-state="opening"] .ball-open,
+.gacha-machine[data-state="flash"] .ball-open {
   left: 104.49%;
   top: 86.23%;
   width: 13%;
@@ -390,7 +420,7 @@ h1 {
   opacity: 0;
 }
 
-.gacha-machine[data-state="revealed"] .ball {
+.gacha-machine[data-state="revealed"] .ball-closed {
   opacity: 1;
   left: 104.49%;
   top: 86.23%;

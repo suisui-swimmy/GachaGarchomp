@@ -15,6 +15,8 @@ const BALL_END_POINT = {
 };
 
 const OPEN_BALL_PREVIEW_MS = 560;
+const DISPENSE_BALL_MIN_MS = 1180;
+const DISPENSE_BALL_FALLBACK_MS = 1400;
 const FLASH_EFFECT_WHITE_RADIUS = 50;
 const FLASH_EFFECT_MARGIN = 120;
 
@@ -31,7 +33,8 @@ const resultName = document.querySelector("#resultName");
 const resultSprite = document.querySelector("#resultSprite");
 const resultText = document.querySelector("#resultText");
 const partyList = document.querySelector("#partyList");
-const ballElement = document.querySelector(".ball");
+const closedBallElement = document.querySelector(".ball-closed");
+const openBallElement = document.querySelector(".ball-open");
 const screenFlashEffect = document.querySelector("#screenFlashEffect");
 
 let isDrawing = false;
@@ -44,7 +47,8 @@ function setAssetSources() {
   document.querySelector(".body-open").src = ASSETS.bodyOpen;
   document.querySelector(".arm-idle").src = ASSETS.armIdle;
   document.querySelector(".arm-pulled").src = ASSETS.armPulled;
-  ballElement.src = ASSETS.ballClosed;
+  closedBallElement.src = ASSETS.ballClosed;
+  openBallElement.src = ASSETS.ballOpen;
   screenFlashEffect.src = ASSETS.ballOpenEffect;
   document.querySelectorAll(".sparkle").forEach((sparkle) => {
     sparkle.src = ASSETS.sparkle;
@@ -163,6 +167,35 @@ function wait(ms) {
   });
 }
 
+function waitForAnimationEnd(element, animationName, fallbackMs) {
+  return new Promise((resolve) => {
+    let isResolved = false;
+
+    const cleanup = () => {
+      element.removeEventListener("animationend", handleAnimationEnd);
+    };
+
+    const finish = () => {
+      if (isResolved) {
+        return;
+      }
+
+      isResolved = true;
+      cleanup();
+      resolve();
+    };
+
+    const handleAnimationEnd = (event) => {
+      if (event.target === element && event.animationName === animationName) {
+        finish();
+      }
+    };
+
+    element.addEventListener("animationend", handleAnimationEnd);
+    window.setTimeout(finish, fallbackMs);
+  });
+}
+
 function waitForNextPaint() {
   return new Promise((resolve) => {
     window.requestAnimationFrame(() => {
@@ -204,17 +237,14 @@ async function drawGacha() {
 
   setBusy(true);
   const result = pickResult();
-  ballElement.src = ASSETS.ballClosed;
   document.body.classList.remove("is-flashing", "is-whiteout-exiting");
 
   machine.dataset.state = "pulled";
   await wait(300);
   machine.dataset.state = "pulling";
   await wait(1000);
-  ballElement.src = ASSETS.ballClosed;
   machine.dataset.state = "dispensing";
-  await wait(1180);
-  ballElement.src = ASSETS.ballOpen;
+  await Promise.all([wait(DISPENSE_BALL_MIN_MS), waitForAnimationEnd(closedBallElement, "dispenseBall", DISPENSE_BALL_FALLBACK_MS)]);
   machine.dataset.state = "opening";
   setFlashOrigin();
   await waitForNextPaint();
@@ -237,7 +267,7 @@ async function init() {
   leverButton.disabled = true;
 
   try {
-    await Promise.all([preloadImage(ASSETS.ballOpen), preloadImage(ASSETS.ballOpenEffect), loadGachaPool()]);
+    await Promise.all([preloadImage(ASSETS.ballClosed), preloadImage(ASSETS.ballOpen), preloadImage(ASSETS.ballOpenEffect), loadGachaPool()]);
   } catch (error) {
     console.error(error);
     resultName.textContent = "読み込み失敗";
