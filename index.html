@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#11183f" />
+    <meta name="theme-color" content="#cfd2ab" />
     <title>GachaGarchomp</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,6 +30,14 @@
           <img class="part ball ball-open" src="./assets/pokeball-open.svg" alt="" />
 
           <button class="lever-hit-area" id="leverButton" type="button" aria-label="ガチャを引く"></button>
+
+          <section class="result-panel" id="resultPanel" aria-live="polite">
+            <p class="result-kicker">今日のメガシンカ</p>
+            <h2 id="resultName">まだ未抽選</h2>
+            <img class="result-sprite" id="resultSprite" src="" alt="" />
+            <p id="resultText">レギュレーションM-Aの排出プールを読み込み中です。</p>
+            <div class="party-list" id="partyList" aria-label="抽選詳細"></div>
+          </section>
         </div>
 
         <div class="action-row">
@@ -38,15 +46,14 @@
             <span class="button-loading">抽選中</span>
           </button>
         </div>
+
+        <div class="social-share-area" aria-label="SNS共有">
+          <button class="share-button" type="button">X</button>
+          <button class="share-button" type="button">LINE</button>
+          <button class="share-button" type="button">URL</button>
+        </div>
       </section>
 
-      <section class="result-panel" id="resultPanel" aria-live="polite">
-        <p class="result-kicker">今日のメガシンカ</p>
-        <h2 id="resultName">まだ未抽選</h2>
-        <img class="result-sprite" id="resultSprite" src="" alt="" />
-        <p id="resultText">レギュレーションM-Aの排出プールを読み込み中です。</p>
-        <div class="party-list" id="partyList" aria-label="抽選詳細"></div>
-      </section>
     </main>
 
     <img class="screen-flash-effect" id="screenFlashEffect" src="./assets/pokeball-open-effect.svg" alt="" aria-hidden="true" />

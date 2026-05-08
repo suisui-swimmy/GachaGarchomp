@@ -1,18 +1,20 @@
 :root {
   color-scheme: light;
-  --bg: #11183f;
+  --bg: #cfd2ab;
+  --gb-ink: #292c18;
   --ink: #fffdf0;
-  --muted: #cbd7ff;
+  --muted: #d8deff;
   --line: #fffdf0;
-  --panel: #18245c;
-  --panel-strong: #233276;
+  --panel: #1d3268;
+  --panel-strong: #263f7c;
   --accent: #ffcf4a;
-  --accent-dark: #f0832e;
-  --blue: #71d7ff;
+  --accent-dark: #9a4b2b;
+  --blue: #1d3268;
   --yellow: #ffef75;
-  --shadow: 0 14px 0 rgba(2, 7, 29, 0.34), 0 22px 56px rgba(0, 0, 0, 0.3);
+  --shadow: 0 8px 0 rgba(41, 44, 24, 0.42);
   --radius: 6px;
   --font-pixel: "DotGothic16", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
+  --stage-size: min(86vw, 374px, calc(100dvh - 320px));
   --ball-open-offset-x: -49.375%;
   --ball-open-offset-y: -55.14%;
   --flash-origin-x: 50vw;
@@ -31,16 +33,13 @@ html {
 
 body {
   min-height: 100vh;
+  min-height: 100dvh;
   margin: 0;
   color: var(--ink);
   font-family: var(--font-pixel);
-  background:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    radial-gradient(circle at 50% 8%, rgba(113, 215, 255, 0.26), transparent 22rem),
-    linear-gradient(180deg, #11183f 0%, #17205a 58%, #352657 100%);
-  background-size: 16px 16px, 16px 16px, auto, auto;
-  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.36);
+  background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M0 0H16M0 0V16' fill='none' stroke='%23979b7f' stroke-opacity='0.42'/%3E%3C/svg%3E");
+  overflow: hidden;
 }
 
 button {
@@ -48,19 +47,23 @@ button {
 }
 
 .app-shell {
+  position: relative;
   width: min(100%, 480px);
   min-height: 100vh;
+  min-height: 100dvh;
   margin: 0 auto;
-  padding: 22px 18px 28px;
+  padding: clamp(10px, 2.4dvh, 22px) 18px clamp(12px, 2.6dvh, 28px);
   display: grid;
-  align-content: start;
-  gap: 18px;
+  align-content: stretch;
+  gap: clamp(8px, 1.8dvh, 18px);
 }
 
 .machine-stage {
   position: relative;
   display: grid;
-  gap: 14px;
+  min-height: calc(100dvh - clamp(10px, 2.4dvh, 22px) - clamp(12px, 2.6dvh, 28px));
+  align-content: space-between;
+  gap: clamp(8px, 1.5dvh, 14px);
 }
 
 .title-block {
@@ -71,8 +74,8 @@ button {
 
 .brand {
   margin: 0;
-  color: var(--yellow);
-  font-size: 0.88rem;
+  color: var(--gb-ink);
+  font-size: clamp(0.7rem, 2.2dvh, 0.88rem);
   font-weight: 400;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -85,21 +88,21 @@ p {
 }
 
 h1 {
-  color: #ffffff;
-  font-size: clamp(1.62rem, 7.6vw, 2.42rem);
-  font-weight: 400;
+  color: var(--gb-ink);
+  font-size: clamp(1.32rem, 6.8vw, 2.2rem);
+  font-weight: 700;
   line-height: 1.12;
   letter-spacing: 0;
 }
 
 .gacha-machine {
   position: relative;
-  width: min(82vw, 340px);
+  width: max(232px, var(--stage-size));
   aspect-ratio: 1;
   margin: 0 auto;
   touch-action: manipulation;
   isolation: isolate;
-  transform: translateX(-6%);
+  transform: none;
 }
 
 .machine-shadow {
@@ -109,7 +112,7 @@ h1 {
   bottom: 7%;
   height: 12%;
   border-radius: 999px;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0));
+  background: rgba(41, 44, 24, 0.24);
   transform-origin: center;
   z-index: 0;
 }
@@ -160,7 +163,7 @@ h1 {
   z-index: 3;
   opacity: 0;
   transform: translate3d(-50%, -50%, 0) scale(0.22) rotate(0deg);
-  filter: drop-shadow(0 10px 0 rgba(0, 0, 0, 0.22));
+  filter: drop-shadow(0 10px 0 rgba(41, 44, 24, 0.22));
 }
 
 .ball-open {
@@ -197,7 +200,7 @@ h1 {
   z-index: 6;
   opacity: 0;
   transform: scale(0.4) rotate(0deg);
-  filter: drop-shadow(0 8px 12px rgba(255, 194, 39, 0.2));
+  filter: drop-shadow(0 8px 12px rgba(41, 44, 24, 0.18));
 }
 
 .sparkle-a {
@@ -236,28 +239,39 @@ h1 {
 }
 
 .primary-button {
+  position: relative;
   min-width: 178px;
-  height: 58px;
-  border: 3px solid #fffdf0;
+  height: clamp(48px, 7.4dvh, 58px);
+  padding: 0 22px 0 40px;
+  border: 3px solid var(--gb-ink);
   border-radius: var(--radius);
-  color: #16111d;
-  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dark) 100%);
-  box-shadow: 0 6px 0 #5d2a1d, 0 12px 0 rgba(2, 7, 29, 0.28);
+  color: var(--gb-ink);
+  background: #d7c85b;
+  box-shadow: 0 6px 0 #8b7435, 0 10px 0 rgba(41, 44, 24, 0.26);
   cursor: pointer;
   font-size: 1.16rem;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0;
   text-shadow: none;
   transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
 }
 
+.primary-button::before {
+  content: "▶";
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.76rem;
+}
+
 .primary-button:active {
   transform: translateY(5px);
-  box-shadow: 0 1px 0 #5d2a1d, 0 5px 0 rgba(2, 7, 29, 0.28);
+  box-shadow: 0 1px 0 #8b7435, 0 4px 0 rgba(41, 44, 24, 0.26);
 }
 
 .primary-button:focus-visible {
-  outline: 4px solid rgba(113, 215, 255, 0.8);
+  outline: 4px solid rgba(29, 50, 104, 0.76);
   outline-offset: 5px;
 }
 
@@ -279,46 +293,63 @@ h1 {
 }
 
 .result-panel {
-  width: 100%;
-  min-height: 174px;
-  padding: 18px;
-  border: 3px solid var(--line);
+  position: absolute;
+  inset: -8px;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  padding: clamp(12px, 3.4%, 16px);
+  border: 3px solid var(--gb-ink);
   border-radius: var(--radius);
-  background: var(--panel);
+  color: var(--gb-ink);
+  background: var(--bg);
   box-shadow: var(--shadow);
   display: grid;
-  gap: 8px;
-  position: relative;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: clamp(5px, 1.5dvh, 9px);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 12;
+  overflow: hidden;
+}
+
+.result-panel.has-result {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .result-panel::before {
   content: "";
   position: absolute;
   inset: 5px;
-  border: 1px solid rgba(255, 253, 240, 0.72);
+  border: 1px solid rgba(41, 44, 24, 0.72);
   border-radius: 2px;
   pointer-events: none;
 }
 
 .result-kicker {
-  color: var(--yellow);
-  font-size: 0.86rem;
-  font-weight: 400;
+  color: var(--gb-ink);
+  font-size: clamp(0.68rem, 2dvh, 0.82rem);
+  font-weight: 700;
 }
 
 .result-panel h2 {
-  font-size: 1.48rem;
-  font-weight: 400;
-  line-height: 1.18;
+  color: var(--gb-ink);
+  font-size: clamp(1rem, 5.2vw, 1.42rem);
+  font-weight: 700;
+  line-height: 1.12;
 }
 
 .result-sprite {
   display: none;
-  width: min(58vw, 220px);
+  width: min(50vw, 190px);
+  max-height: 190px;
   aspect-ratio: 1;
   justify-self: center;
+  align-self: center;
   object-fit: contain;
-  filter: drop-shadow(0 12px 0 rgba(0, 0, 0, 0.18)) drop-shadow(0 18px 22px rgba(0, 0, 0, 0.18));
+  filter: drop-shadow(0 10px 0 rgba(41, 44, 24, 0.18));
 }
 
 .result-panel.has-result .result-sprite {
@@ -326,29 +357,54 @@ h1 {
 }
 
 .result-panel p {
-  color: var(--muted);
-  font-size: 0.98rem;
-  line-height: 1.65;
+  color: var(--gb-ink);
+  font-size: clamp(0.72rem, 2dvh, 0.86rem);
+  line-height: 1.28;
 }
 
 .party-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding-top: 4px;
+  justify-content: center;
+  gap: 6px;
+  padding-top: 0;
 }
 
 .party-chip {
   max-width: 100%;
-  min-height: 34px;
-  padding: 7px 11px;
-  border: 2px solid rgba(255, 253, 240, 0.8);
+  min-height: 24px;
+  padding: 4px 8px;
+  border: 2px solid var(--gb-ink);
   border-radius: 4px;
-  color: #fffdf0;
-  background: var(--panel-strong);
-  font-size: 0.88rem;
+  color: var(--gb-ink);
+  background: transparent;
+  font-size: clamp(0.64rem, 1.9dvh, 0.76rem);
   font-weight: 400;
   line-height: 1.2;
+}
+
+.social-share-area {
+  width: min(78vw, 334px);
+  min-height: clamp(64px, 13dvh, 106px);
+  margin: 0 auto;
+  padding: 10px;
+  border: 2px dashed rgba(41, 44, 24, 0.42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.share-button {
+  min-width: 64px;
+  min-height: 34px;
+  border: 2px solid var(--gb-ink);
+  border-radius: var(--radius);
+  color: var(--gb-ink);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-shadow: none;
 }
 
 .gacha-machine[data-state="dispensing"] .character-layer {
@@ -639,12 +695,24 @@ body.is-whiteout-exiting .screen-whiteout {
   }
 
   .result-panel {
-    align-self: center;
+    align-self: auto;
   }
 
   .gacha-machine {
     width: min(100%, 420px);
     transform: none;
+  }
+
+  .result-sprite {
+    width: min(210px, 48%);
+  }
+
+  .result-panel p {
+    font-size: 0.94rem;
+  }
+
+  .party-chip {
+    font-size: 0.84rem;
   }
 }
 

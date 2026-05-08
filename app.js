@@ -237,6 +237,7 @@ async function drawGacha() {
 
   setBusy(true);
   const result = pickResult();
+  resultPanel.classList.remove("has-result", "is-entering");
   document.body.classList.remove("is-flashing", "is-whiteout-exiting");
 
   machine.dataset.state = "pulled";
