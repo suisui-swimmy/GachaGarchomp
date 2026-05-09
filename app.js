@@ -33,6 +33,12 @@ const SHARE_IMAGE = {
   mimeType: "image/png",
   fileName: "gachagarchomp-result.png",
 };
+const SHARE_CARD = {
+  x: 70,
+  y: 80,
+  width: 940,
+  height: 920,
+};
 const SHARE_IMAGE_FONT = '"DotGothic16", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif';
 
 const machine = document.querySelector("#gachaMachine");
@@ -242,39 +248,6 @@ function drawFittedText(context, text, x, y, maxWidth, options = {}) {
   context.fillText(text, x, y);
 }
 
-function drawWrappedText(context, text, x, y, maxWidth, lineHeight, options = {}) {
-  const color = options.color || "#292c18";
-  const size = options.size || 24;
-  const weight = options.weight || 400;
-  const lines = [];
-  let currentLine = "";
-
-  context.textAlign = "center";
-  context.textBaseline = "middle";
-  context.fillStyle = color;
-  setCanvasFont(context, size, weight);
-
-  Array.from(text).forEach((character) => {
-    const nextLine = currentLine + character;
-    if (currentLine && context.measureText(nextLine).width > maxWidth) {
-      lines.push(currentLine);
-      currentLine = character;
-      return;
-    }
-
-    currentLine = nextLine;
-  });
-
-  if (currentLine) {
-    lines.push(currentLine);
-  }
-
-  const startY = y - ((lines.length - 1) * lineHeight) / 2;
-  lines.forEach((line, index) => {
-    context.fillText(line, x, startY + index * lineHeight);
-  });
-}
-
 function drawResultCardBackground(context) {
   context.fillStyle = "#cfd2ab";
   context.fillRect(0, 0, SHARE_IMAGE.width, SHARE_IMAGE.height);
@@ -294,10 +267,7 @@ function drawResultCardBackground(context) {
 }
 
 function drawResultCardFrame(context) {
-  const x = 120;
-  const y = 160;
-  const width = 840;
-  const height = 760;
+  const { x, y, width, height } = SHARE_CARD;
 
   context.fillStyle = "rgba(41, 44, 24, 0.38)";
   drawRoundedRect(context, x + 14, y + 18, width, height, 12);
@@ -374,30 +344,21 @@ async function buildResultImageFile(result = currentResult) {
   drawResultCardBackground(context);
   drawResultCardFrame(context);
 
-  drawFittedText(context, "GACHAGARCHOMP", SHARE_IMAGE.width / 2, 90, 720, {
-    size: 38,
-    minSize: 28,
-    weight: 400,
-  });
-  drawFittedText(context, "今日のメガシンカ", SHARE_IMAGE.width / 2, 238, 640, {
-    size: 48,
+  drawFittedText(context, "今日のメガシンカ", SHARE_IMAGE.width / 2, 206, 760, {
+    size: 56,
     minSize: 34,
     weight: 700,
   });
-  drawFittedText(context, result.name, SHARE_IMAGE.width / 2, 318, 740, {
-    size: 74,
+  drawFittedText(context, result.name, SHARE_IMAGE.width / 2, 306, 840, {
+    size: 86,
     minSize: 44,
     weight: 700,
   });
-  drawImageContained(context, sprite, SHARE_IMAGE.width / 2, 590, 580, 460);
-  drawFittedText(context, "#GachaGarchomp", SHARE_IMAGE.width / 2, 830, 720, {
-    size: 44,
+  drawImageContained(context, sprite, SHARE_IMAGE.width / 2, 612, 680, 520);
+  drawFittedText(context, "#GachaGarchomp", SHARE_IMAGE.width / 2, 884, 820, {
+    size: 52,
     minSize: 30,
     weight: 700,
-  });
-  drawWrappedText(context, buildPublicResultUrl(result), SHARE_IMAGE.width / 2, 974, 860, 30, {
-    size: 24,
-    weight: 400,
   });
 
   const blob = await canvasToBlob(canvas);
