@@ -50,6 +50,7 @@ const resultSprite = document.querySelector("#resultSprite");
 const resultText = document.querySelector("#resultText");
 const partyList = document.querySelector("#partyList");
 const shareButton = document.querySelector("#shareButton");
+const downloadButton = document.querySelector("#downloadButton");
 const copyButton = document.querySelector("#copyButton");
 const closedBallElement = document.querySelector(".ball-closed");
 const openBallElement = document.querySelector(".ball-open");
@@ -177,6 +178,7 @@ function renderChips(labels) {
 function updateShareControls() {
   const canShare = Boolean(currentResult);
   shareButton.disabled = !canShare;
+  downloadButton.disabled = !canShare;
   copyButton.disabled = !canShare;
 }
 
@@ -318,6 +320,10 @@ function canvasToBlob(canvas) {
   });
 }
 
+function buildResultImageFileName(result = currentResult) {
+  return result ? `gachagarchomp-${result.apiName}.png` : SHARE_IMAGE.fileName;
+}
+
 async function buildResultImageFile(result = currentResult) {
   if (!result) {
     return null;
@@ -362,7 +368,7 @@ async function buildResultImageFile(result = currentResult) {
   });
 
   const blob = await canvasToBlob(canvas);
-  return new File([blob], SHARE_IMAGE.fileName, { type: SHARE_IMAGE.mimeType });
+  return new File([blob], buildResultImageFileName(result), { type: SHARE_IMAGE.mimeType });
 }
 
 function prepareResultImage(result) {
@@ -684,8 +690,43 @@ async function copyShareText() {
   }
 }
 
+async function downloadResultImage() {
+  if (!currentResult) {
+    return;
+  }
+
+  downloadButton.disabled = true;
+  showShareFeedback(downloadButton, "生成中");
+
+  try {
+    const imageFile = await getPreparedResultImageFile();
+
+    if (!imageFile) {
+      throw new Error("Result image is unavailable.");
+    }
+
+    const url = URL.createObjectURL(imageFile);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = imageFile.name || buildResultImageFileName();
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => {
+      URL.revokeObjectURL(url);
+    }, 1000);
+    showShareFeedback(downloadButton, "保存");
+  } catch (error) {
+    console.error(error);
+    showShareFeedback(downloadButton, "失敗");
+  } finally {
+    updateShareControls();
+  }
+}
+
 drawButton.addEventListener("click", drawGacha);
 leverButton.addEventListener("click", drawGacha);
 shareButton.addEventListener("click", shareResult);
+downloadButton.addEventListener("click", downloadResultImage);
 copyButton.addEventListener("click", copyShareText);
 init();
