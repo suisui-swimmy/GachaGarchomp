@@ -24,8 +24,8 @@
           <img class="part character-layer body-open" src="./assets/garchomp-mouthopen.svg" alt="" />
           <img class="part character-layer arm-idle" src="./assets/garchomp-arm-idle.svg" alt="" />
           <img class="part character-layer arm-pulled" src="./assets/garchomp-arm-pulled.svg" alt="" />
-          <img class="part sparkle sparkle-a" src="./assets/sparkle.svg" alt="" />
-          <img class="part sparkle sparkle-b" src="./assets/sparkle.svg" alt="" />
+          <img class="part steam steam-a" src="./assets/steam.svg" alt="" />
+          <img class="part steam steam-b" src="./assets/steam.svg" alt="" />
           <img class="part ball ball-closed" src="./assets/pokeball-close.svg" alt="" />
           <img class="part ball ball-open" src="./assets/pokeball-open.svg" alt="" />
 
@@ -48,9 +48,12 @@
         </div>
 
         <div class="social-share-area" aria-label="SNS共有">
-          <button class="share-button" id="shareXButton" type="button" disabled>X</button>
-          <button class="share-button" id="shareDiscordButton" type="button" disabled>Discord</button>
-          <button class="share-button" id="shareUrlButton" type="button" disabled>URL</button>
+          <button class="share-button" id="shareButton" type="button" aria-label="画像付きで結果を共有" title="画像付きで結果を共有" disabled>
+            <img src="./assets/share.svg" alt="" aria-hidden="true" />
+          </button>
+          <button class="share-button" id="copyButton" type="button" aria-label="共有文をコピー" title="共有文をコピー" disabled>
+            <img src="./assets/content-copy.svg" alt="" aria-hidden="true" />
+          </button>
         </div>
       </section>
 

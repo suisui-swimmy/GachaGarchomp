@@ -29,7 +29,7 @@ const ASSETS = {
   armIdle: "./assets/garchomp-arm-idle.svg",
   armPulled: "./assets/garchomp-arm-pulled.svg",
   ball: "./assets/pokeball.png",
-  sparkle: "./assets/sparkle.png",
+  steam: "./assets/steam.png",
 };
 ```
 

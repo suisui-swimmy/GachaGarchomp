@@ -195,7 +195,7 @@ h1 {
   will-change: opacity;
 }
 
-.sparkle {
+.steam {
   width: 13%;
   z-index: 6;
   opacity: 0;
@@ -203,12 +203,12 @@ h1 {
   filter: drop-shadow(0 8px 12px rgba(41, 44, 24, 0.18));
 }
 
-.sparkle-a {
+.steam-a {
   left: 63%;
   top: 54%;
 }
 
-.sparkle-b {
+.steam-b {
   left: 42%;
   top: 72%;
 }
@@ -385,27 +385,33 @@ h1 {
 
 .social-share-area {
   width: min(78vw, 334px);
-  min-height: clamp(64px, 13dvh, 106px);
+  min-height: clamp(54px, 10dvh, 82px);
   margin: 0 auto;
-  padding: 10px;
-  border: 2px dashed rgba(41, 44, 24, 0.42);
+  padding: 6px 10px 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 14px;
 }
 
 .share-button {
-  min-width: 72px;
-  min-height: 34px;
-  padding: 0 10px;
+  position: relative;
+  width: 46px;
+  height: 40px;
+  padding: 0;
   border: 2px solid var(--gb-ink);
   border-radius: var(--radius);
   color: var(--gb-ink);
   background: transparent;
   cursor: pointer;
-  font-size: 0.8rem;
-  text-shadow: none;
+  display: grid;
+  place-items: center;
+}
+
+.share-button img {
+  width: 24px;
+  height: 24px;
+  display: block;
 }
 
 .share-button:disabled {
@@ -416,6 +422,18 @@ h1 {
 .share-button:focus-visible {
   outline: 3px solid rgba(29, 50, 104, 0.72);
   outline-offset: 3px;
+}
+
+.share-button.is-feedback::after {
+  content: attr(data-feedback);
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 4px);
+  transform: translateX(-50%);
+  color: var(--gb-ink);
+  font-size: 0.64rem;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .gacha-machine[data-state="dispensing"] .character-layer {
@@ -498,9 +516,9 @@ h1 {
   opacity: 0;
 }
 
-.gacha-machine[data-state="dispensing"] .sparkle,
-.gacha-machine[data-state="revealed"] .sparkle {
-  animation: sparklePop 880ms ease-out forwards;
+.gacha-machine[data-state="dispensing"] .steam,
+.gacha-machine[data-state="revealed"] .steam {
+  animation: steamPuff 880ms ease-out forwards;
 }
 
 body.is-flashing .screen-flash-effect {
@@ -519,11 +537,11 @@ body.is-whiteout-exiting .screen-whiteout {
   animation: resultPanelEnter 360ms ease-out both;
 }
 
-.gacha-machine[data-state="revealed"] .sparkle-a {
+.gacha-machine[data-state="revealed"] .steam-a {
   animation-delay: 70ms;
 }
 
-.gacha-machine[data-state="revealed"] .sparkle-b {
+.gacha-machine[data-state="revealed"] .steam-b {
   animation-delay: 170ms;
 }
 
@@ -634,7 +652,7 @@ body.is-whiteout-exiting .screen-whiteout {
   }
 }
 
-@keyframes sparklePop {
+@keyframes steamPuff {
   0% {
     opacity: 0;
     transform: scale(0.3) rotate(-20deg);
