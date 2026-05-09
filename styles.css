@@ -106,6 +106,7 @@ h1 {
 }
 
 .machine-shadow {
+  display: none;
   position: absolute;
   left: 14%;
   right: 12%;
@@ -163,7 +164,7 @@ h1 {
   z-index: 3;
   opacity: 0;
   transform: translate3d(-50%, -50%, 0) scale(0.22) rotate(0deg);
-  filter: drop-shadow(0 10px 0 rgba(41, 44, 24, 0.22));
+  filter: none;
 }
 
 .ball-open {
@@ -198,19 +199,25 @@ h1 {
 .steam {
   width: 13%;
   z-index: 6;
+  display: none;
   opacity: 0;
   transform: scale(0.4) rotate(0deg);
   filter: drop-shadow(0 8px 12px rgba(41, 44, 24, 0.18));
 }
 
 .steam-a {
-  left: 63%;
-  top: 54%;
+  left: 73%;
+  top: 27%;
 }
 
 .steam-b {
-  left: 42%;
-  top: 72%;
+  left: 27%;
+  top: 52%;
+}
+
+.steam-c {
+  left: 66%;
+  top: 78%;
 }
 
 .lever-hit-area {
@@ -516,9 +523,8 @@ h1 {
   opacity: 0;
 }
 
-.gacha-machine[data-state="dispensing"] .steam,
-.gacha-machine[data-state="revealed"] .steam {
-  animation: steamPuff 880ms ease-out forwards;
+.gacha-machine[data-state="pulling"] .steam {
+  animation: steamPuff 430ms ease-out both;
 }
 
 body.is-flashing .screen-flash-effect {
@@ -537,12 +543,16 @@ body.is-whiteout-exiting .screen-whiteout {
   animation: resultPanelEnter 360ms ease-out both;
 }
 
-.gacha-machine[data-state="revealed"] .steam-a {
-  animation-delay: 70ms;
+.gacha-machine[data-state="pulling"] .steam-a {
+  animation-delay: 120ms;
 }
 
-.gacha-machine[data-state="revealed"] .steam-b {
-  animation-delay: 170ms;
+.gacha-machine[data-state="pulling"] .steam-b {
+  animation-delay: 420ms;
+}
+
+.gacha-machine[data-state="pulling"] .steam-c {
+  animation-delay: 680ms;
 }
 
 @keyframes idleBody {
