@@ -1,0 +1,22 @@
+{
+  "regulation": "M-B",
+  "label": "レギュレーションM-B",
+  "entries": [
+    { "apiName": "raichu-mega-x", "weight": 1 },
+    { "apiName": "raichu-mega-y", "weight": 1 },
+    { "apiName": "sceptile-mega", "weight": 1 },
+    { "apiName": "blaziken-mega", "weight": 1 },
+    { "apiName": "swampert-mega", "weight": 1 },
+    { "apiName": "mawile-mega", "weight": 1 },
+    { "apiName": "metagross-mega", "weight": 1 },
+    { "apiName": "staraptor-mega", "weight": 1 },
+    { "apiName": "scolipede-mega", "weight": 1 },
+    { "apiName": "scrafty-mega", "weight": 1 },
+    { "apiName": "eelektross-mega", "weight": 1 },
+    { "apiName": "pyroar-mega", "weight": 1 },
+    { "apiName": "malamar-mega", "weight": 1 },
+    { "apiName": "barbaracle-mega", "weight": 1 },
+    { "apiName": "dragalge-mega", "weight": 1 },
+    { "apiName": "falinks-mega", "weight": 1 }
+  ]
+}

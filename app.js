@@ -23,7 +23,20 @@ const FLASH_EFFECT_MARGIN = 120;
 
 const DATA_SOURCES = {
   sprites: "./assets/sprites/mega-sprites.json",
-  pool: "./assets/gacha-pools/regulation-m-a.json",
+  pools: {
+    all: ["./assets/gacha-pools/regulation-m-a.json", "./assets/gacha-pools/regulation-m-b.json"],
+    new: ["./assets/gacha-pools/regulation-m-b.json"],
+  },
+};
+
+const DEFAULT_DRAW_MODE = "all";
+const DRAW_MODES = {
+  all: {
+    chip: "全部",
+  },
+  new: {
+    chip: "M-B新規",
+  },
 };
 
 const SHARE_BASE_URL = "https://suisui-swimmy.github.io/GachaGarchomp/";
@@ -42,7 +55,7 @@ const SHARE_CARD = {
 const SHARE_IMAGE_FONT = '"DotGothic16", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic", Meiryo, sans-serif';
 
 const machine = document.querySelector("#gachaMachine");
-const drawButton = document.querySelector("#drawButton");
+const drawButtons = Array.from(document.querySelectorAll("[data-draw-mode]"));
 const leverButton = document.querySelector("#leverButton");
 const resultPanel = document.querySelector("#resultPanel");
 const resultName = document.querySelector("#resultName");
@@ -57,10 +70,10 @@ const openBallElement = document.querySelector(".ball-open");
 const screenFlashEffect = document.querySelector("#screenFlashEffect");
 
 let isDrawing = false;
-let lastApiName = "";
-let gachaPool = [];
+let lastApiNameByMode = {};
+let gachaPools = {};
 let currentResult = null;
-let activePoolLabel = "レギュレーションM-A";
+let currentDrawMode = DEFAULT_DRAW_MODE;
 let resultImageFile = null;
 let resultImagePromise = null;
 let resultImageApiName = "";
@@ -91,10 +104,26 @@ function normalizeDisplayName(name) {
   return name.replaceAll("Ｘ", "X").replaceAll("Ｙ", "Y");
 }
 
-function buildGachaPool(sprites, poolConfig) {
+function mergePoolEntries(poolConfigs) {
+  const entriesByApiName = new Map();
+
+  poolConfigs.forEach((poolConfig) => {
+    const entries = poolConfig && Array.isArray(poolConfig.entries) ? poolConfig.entries : [];
+
+    entries.forEach((entry) => {
+      if (entry.apiName && !entriesByApiName.has(entry.apiName)) {
+        entriesByApiName.set(entry.apiName, entry);
+      }
+    });
+  });
+
+  return Array.from(entriesByApiName.values());
+}
+
+function buildGachaPool(sprites, poolEntries) {
   const spritesByApiName = new Map(sprites.map((sprite) => [sprite.apiName, sprite]));
 
-  return poolConfig.entries
+  return poolEntries
     .map((entry) => {
       const sprite = spritesByApiName.get(entry.apiName);
       const weight = Number(entry.weight);
@@ -112,22 +141,61 @@ function buildGachaPool(sprites, poolConfig) {
     .filter(Boolean);
 }
 
-function findResultByApiName(apiName) {
-  return gachaPool.find((result) => result.apiName === apiName) || null;
+function getDrawModeMeta(mode) {
+  return DRAW_MODES[mode] || DRAW_MODES[DEFAULT_DRAW_MODE];
 }
 
-async function loadGachaPool() {
-  const [sprites, poolConfig] = await Promise.all([loadJson(DATA_SOURCES.sprites), loadJson(DATA_SOURCES.pool)]);
-  activePoolLabel = poolConfig.label || poolConfig.regulation || activePoolLabel;
-  gachaPool = buildGachaPool(sprites, poolConfig);
+function getPoolForMode(mode) {
+  return gachaPools[mode] || [];
+}
 
-  if (gachaPool.length === 0) {
-    throw new Error("No drawable Pokemon in the active gacha pool.");
+function findResultByApiName(apiName) {
+  const pools = Object.values(gachaPools);
+
+  for (const pool of pools) {
+    const result = pool.find((item) => item.apiName === apiName);
+    if (result) {
+      return result;
+    }
   }
 
+  return null;
+}
+
+async function loadPoolConfigs(poolUrls) {
+  const configs = await Promise.all(
+    poolUrls.map(async (poolUrl) => {
+      const poolConfig = await loadJson(poolUrl);
+      return [poolUrl, poolConfig];
+    }),
+  );
+
+  return new Map(configs);
+}
+
+async function loadGachaPools() {
+  const poolUrls = Array.from(new Set(Object.values(DATA_SOURCES.pools).flat()));
+  const [sprites, poolConfigsByUrl] = await Promise.all([loadJson(DATA_SOURCES.sprites), loadPoolConfigs(poolUrls)]);
+
+  gachaPools = Object.fromEntries(
+    Object.entries(DATA_SOURCES.pools).map(([mode, poolConfigUrls]) => {
+      const poolConfigs = poolConfigUrls.map((poolConfigUrl) => poolConfigsByUrl.get(poolConfigUrl));
+      const poolEntries = mergePoolEntries(poolConfigs);
+      return [mode, buildGachaPool(sprites, poolEntries)];
+    }),
+  );
+
+  const emptyMode = Object.keys(DRAW_MODES).find((mode) => getPoolForMode(mode).length === 0);
+  if (emptyMode) {
+    throw new Error(`No drawable Pokemon in the ${emptyMode} gacha pool.`);
+  }
+
+  const allCount = getPoolForMode("all").length;
+  const newCount = getPoolForMode("new").length;
+
   resultName.textContent = "準備OK";
-  resultText.textContent = `${activePoolLabel}で使えるメガシンカ ${gachaPool.length}種類から抽選します。`;
-  renderChips(["M-A", `${gachaPool.length}種類`, "weight編集対応"]);
+  resultText.textContent = `全部 ${allCount}種類 / 新規追加(M-B) ${newCount}種類から抽選できます。`;
+  renderChips([`全部 ${allCount}種類`, `M-B新規 ${newCount}種類`, "weight編集対応"]);
 }
 
 function getResultFromUrl() {
@@ -135,21 +203,24 @@ function getResultFromUrl() {
   return apiName ? findResultByApiName(apiName) : null;
 }
 
-function pickResult() {
-  if (gachaPool.length === 1) {
-    lastApiName = gachaPool[0].apiName;
-    return gachaPool[0];
+function pickResult(mode) {
+  const pool = getPoolForMode(mode);
+
+  if (pool.length === 1) {
+    lastApiNameByMode[mode] = pool[0].apiName;
+    return pool[0];
   }
 
   let picked = null;
   let guard = 0;
+  const lastApiName = lastApiNameByMode[mode] || "";
 
   while ((!picked || picked.apiName === lastApiName) && guard < 12) {
-    const totalWeight = gachaPool.reduce((sum, result) => sum + result.weight, 0);
+    const totalWeight = pool.reduce((sum, result) => sum + result.weight, 0);
     let cursor = Math.random() * totalWeight;
 
-    picked = gachaPool[gachaPool.length - 1];
-    for (const result of gachaPool) {
+    picked = pool[pool.length - 1];
+    for (const result of pool) {
       cursor -= result.weight;
       if (cursor <= 0) {
         picked = result;
@@ -160,7 +231,7 @@ function pickResult() {
     guard += 1;
   }
 
-  lastApiName = picked.apiName;
+  lastApiNameByMode[mode] = picked.apiName;
   return picked;
 }
 
@@ -471,13 +542,15 @@ function syncResultUrl() {
   window.history.replaceState(null, "", buildCurrentResultUrl());
 }
 
-function renderResult(result) {
+function renderResult(result, mode = currentDrawMode) {
+  currentDrawMode = mode;
   currentResult = result;
+  const modeMeta = getDrawModeMeta(mode);
   resultName.textContent = result.name;
   resultSprite.src = result.src;
   resultSprite.alt = result.name;
   resultText.textContent = "#GachaGarchomp";
-  renderChips([result.apiName, `weight ${result.weight}`]);
+  renderChips([modeMeta.chip, result.apiName, `weight ${result.weight}`]);
   prepareResultImage(result);
   resultPanel.classList.add("has-result");
   resultPanel.classList.remove("is-entering");
@@ -489,8 +562,11 @@ function renderResult(result) {
 
 function setBusy(nextBusy) {
   isDrawing = nextBusy;
-  drawButton.disabled = nextBusy || gachaPool.length === 0;
-  leverButton.disabled = nextBusy || gachaPool.length === 0;
+  drawButtons.forEach((button) => {
+    const mode = button.dataset.drawMode || DEFAULT_DRAW_MODE;
+    button.disabled = nextBusy || getPoolForMode(mode).length === 0;
+  });
+  leverButton.disabled = nextBusy || getPoolForMode(DEFAULT_DRAW_MODE).length === 0;
   document.body.classList.toggle("is-busy", nextBusy);
 }
 
@@ -563,14 +639,17 @@ function setFlashOrigin() {
   document.documentElement.style.setProperty("--flash-scale", Math.max(flashScale, 18).toFixed(2));
 }
 
-async function drawGacha() {
-  if (isDrawing || gachaPool.length === 0) {
+async function drawGacha(mode = DEFAULT_DRAW_MODE) {
+  const pool = getPoolForMode(mode);
+
+  if (isDrawing || pool.length === 0) {
     return;
   }
 
   setBusy(true);
+  currentDrawMode = mode;
   const isRedraw = machine.dataset.state === "result";
-  const result = pickResult();
+  const result = pickResult(mode);
   resultPanel.classList.remove("has-result", "is-entering");
   document.body.classList.remove("is-flashing", "is-whiteout-exiting");
 
@@ -592,7 +671,7 @@ async function drawGacha() {
   machine.dataset.state = "flash";
   document.body.classList.add("is-flashing");
   await wait(760);
-  renderResult(result);
+  renderResult(result, mode);
   machine.dataset.state = "result";
   document.body.classList.remove("is-flashing");
   document.body.classList.add("is-whiteout-exiting");
@@ -603,17 +682,19 @@ async function drawGacha() {
 
 async function init() {
   setAssetSources();
-  drawButton.disabled = true;
+  drawButtons.forEach((button) => {
+    button.disabled = true;
+  });
   leverButton.disabled = true;
   updateShareControls();
 
   try {
-    await Promise.all([preloadImage(ASSETS.ballClosed), preloadImage(ASSETS.ballOpen), preloadImage(ASSETS.ballOpenEffect), loadGachaPool()]);
+    await Promise.all([preloadImage(ASSETS.ballClosed), preloadImage(ASSETS.ballOpen), preloadImage(ASSETS.ballOpenEffect), loadGachaPools()]);
     const urlResult = getResultFromUrl();
     if (urlResult) {
-      lastApiName = urlResult.apiName;
+      lastApiNameByMode[DEFAULT_DRAW_MODE] = urlResult.apiName;
       machine.dataset.state = "result";
-      renderResult(urlResult);
+      renderResult(urlResult, DEFAULT_DRAW_MODE);
     }
   } catch (error) {
     console.error(error);
@@ -724,8 +805,12 @@ async function downloadResultImage() {
   }
 }
 
-drawButton.addEventListener("click", drawGacha);
-leverButton.addEventListener("click", drawGacha);
+drawButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    drawGacha(button.dataset.drawMode || DEFAULT_DRAW_MODE);
+  });
+});
+leverButton.addEventListener("click", () => drawGacha(DEFAULT_DRAW_MODE));
 shareButton.addEventListener("click", shareResult);
 downloadButton.addEventListener("click", downloadResultImage);
 copyButton.addEventListener("click", copyShareText);
