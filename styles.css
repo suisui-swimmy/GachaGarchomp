@@ -241,23 +241,30 @@ h1 {
 }
 
 .action-row {
+  width: min(100%, 334px);
+  margin: 0 auto;
   display: grid;
-  place-items: center;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
 }
 
 .primary-button {
   position: relative;
-  min-width: 178px;
+  width: 100%;
+  min-width: 0;
   height: clamp(48px, 7.4dvh, 58px);
-  padding: 0 22px 0 40px;
+  padding: 0 12px 0 30px;
   border: 3px solid var(--gb-ink);
   border-radius: var(--radius);
   color: var(--gb-ink);
   background: #d7c85b;
   box-shadow: 0 6px 0 #8b7435, 0 10px 0 rgba(41, 44, 24, 0.26);
   cursor: pointer;
-  font-size: 1.16rem;
+  display: grid;
+  place-items: center;
+  font-size: 0.98rem;
   font-weight: 700;
+  line-height: 1.05;
   letter-spacing: 0;
   text-shadow: none;
   transition: transform 120ms ease, filter 120ms ease, box-shadow 120ms ease;
@@ -266,7 +273,7 @@ h1 {
 .primary-button::before {
   content: "▶";
   position: absolute;
-  left: 16px;
+  left: 11px;
   top: 50%;
   transform: translateY(-50%);
   font-size: 0.76rem;
@@ -289,6 +296,16 @@ h1 {
 
 .button-loading {
   display: none;
+}
+
+.button-label {
+  display: inline-grid;
+  place-items: center;
+}
+
+.button-sub {
+  display: block;
+  font-size: 0.78em;
 }
 
 .is-busy .button-label {
