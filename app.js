@@ -24,8 +24,12 @@ const FLASH_EFFECT_MARGIN = 120;
 const DATA_SOURCES = {
   sprites: "./assets/sprites/mega-sprites.json",
   pools: {
-    all: ["./assets/gacha-pools/regulation-m-a.json", "./assets/gacha-pools/regulation-m-b.json"],
-    new: ["./assets/gacha-pools/regulation-m-b.json"],
+    all: [
+      "./assets/gacha-pools/regulation-m-a.json",
+      "./assets/gacha-pools/regulation-m-b.json",
+      "./assets/gacha-pools/regulation-m-c.json",
+    ],
+    new: ["./assets/gacha-pools/regulation-m-c.json"],
   },
 };
 
@@ -35,7 +39,7 @@ const DRAW_MODES = {
     chip: "全部",
   },
   new: {
-    chip: "M-B新規",
+    chip: "M-C暫定新規",
   },
 };
 
@@ -194,8 +198,8 @@ async function loadGachaPools() {
   const newCount = getPoolForMode("new").length;
 
   resultName.textContent = "準備OK";
-  resultText.textContent = `全部 ${allCount}種類 / 新規追加(M-B) ${newCount}種類から抽選できます。`;
-  renderChips([`全部 ${allCount}種類`, `M-B新規 ${newCount}種類`, "weight編集対応"]);
+  resultText.textContent = `全部 ${allCount}種類 / 新規追加(M-C暫定) ${newCount}種類から抽選できます。`;
+  renderChips([`全部 ${allCount}種類`, `M-C暫定新規 ${newCount}種類`, "weight編集対応"]);
 }
 
 function getResultFromUrl() {
