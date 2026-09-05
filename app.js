@@ -18,6 +18,7 @@ const OPEN_BALL_PREVIEW_MS = 560;
 const IDLE_BEFORE_REPULL_MS = 420;
 const DISPENSE_BALL_MIN_MS = 1180;
 const DISPENSE_BALL_FALLBACK_MS = 1400;
+const RESULT_SPRITE_TIMEOUT_MS = 12000;
 const FLASH_EFFECT_WHITE_RADIUS = 50;
 const FLASH_EFFECT_MARGIN = 120;
 
@@ -63,7 +64,7 @@ const drawButtons = Array.from(document.querySelectorAll("[data-draw-mode]"));
 const leverButton = document.querySelector("#leverButton");
 const resultPanel = document.querySelector("#resultPanel");
 const resultName = document.querySelector("#resultName");
-const resultSprite = document.querySelector("#resultSprite");
+let resultSprite = document.querySelector("#resultSprite");
 const resultText = document.querySelector("#resultText");
 const partyList = document.querySelector("#partyList");
 const shareButton = document.querySelector("#shareButton");
@@ -251,9 +252,9 @@ function renderChips(labels) {
 }
 
 function updateShareControls() {
-  const canShare = Boolean(currentResult);
+  const canShare = Boolean(currentResult) && !isDrawing;
   shareButton.disabled = !canShare;
-  downloadButton.disabled = !canShare;
+  downloadButton.disabled = !canShare || resultSprite.hidden;
   copyButton.disabled = !canShare;
 }
 
@@ -399,7 +400,7 @@ function buildResultImageFileName(result = currentResult) {
   return result ? `gachagarchomp-${result.apiName}.png` : SHARE_IMAGE.fileName;
 }
 
-async function buildResultImageFile(result = currentResult) {
+async function buildResultImageFile(result = currentResult, preparedSprite = null) {
   if (!result) {
     return null;
   }
@@ -412,7 +413,7 @@ async function buildResultImageFile(result = currentResult) {
     await document.fonts.ready;
   }
 
-  const sprite = await loadImageForCanvas(result.src);
+  const sprite = preparedSprite || await loadImageForCanvas(result.src);
   const canvas = document.createElement("canvas");
   canvas.width = SHARE_IMAGE.width;
   canvas.height = SHARE_IMAGE.height;
@@ -446,10 +447,10 @@ async function buildResultImageFile(result = currentResult) {
   return new File([blob], buildResultImageFileName(result), { type: SHARE_IMAGE.mimeType });
 }
 
-function prepareResultImage(result) {
+function prepareResultImage(result, sprite) {
   resultImageFile = null;
   resultImageApiName = result.apiName;
-  resultImagePromise = buildResultImageFile(result)
+  resultImagePromise = (sprite ? buildResultImageFile(result, sprite) : Promise.resolve(null))
     .then((file) => {
       if (currentResult?.apiName === result.apiName) {
         resultImageFile = file;
@@ -546,16 +547,22 @@ function syncResultUrl() {
   window.history.replaceState(null, "", buildCurrentResultUrl());
 }
 
-function renderResult(result, mode = currentDrawMode) {
+function renderResult(result, mode = currentDrawMode, sprite = null) {
   currentDrawMode = mode;
   currentResult = result;
   const modeMeta = getDrawModeMeta(mode);
   resultName.textContent = result.name;
-  resultSprite.src = result.src;
-  resultSprite.alt = result.name;
-  resultText.textContent = "#GachaGarchomp";
+  // Insert the decoded image itself so the previous image cannot remain painted.
+  const nextSprite = sprite || new Image();
+  nextSprite.id = "resultSprite";
+  nextSprite.className = "result-sprite";
+  nextSprite.alt = sprite ? result.name : "";
+  nextSprite.hidden = !sprite;
+  resultSprite.replaceWith(nextSprite);
+  resultSprite = nextSprite;
+  resultText.textContent = sprite ? "#GachaGarchomp" : "画像を読み込めませんでした。再読み込みで再試行できます。";
   renderChips([modeMeta.chip, result.apiName, `weight ${result.weight}`]);
-  prepareResultImage(result);
+  prepareResultImage(result, sprite);
   resultPanel.classList.add("has-result");
   resultPanel.classList.remove("is-entering");
   void resultPanel.offsetWidth;
@@ -572,6 +579,7 @@ function setBusy(nextBusy) {
   });
   leverButton.disabled = nextBusy || getPoolForMode(DEFAULT_DRAW_MODE).length === 0;
   document.body.classList.toggle("is-busy", nextBusy);
+  updateShareControls();
 }
 
 function wait(ms) {
@@ -626,6 +634,42 @@ function preloadImage(src) {
   });
 }
 
+function loadResultSprite(result) {
+  return new Promise((resolve) => {
+    const image = new Image();
+    let settled = false;
+
+    const finish = (sprite) => {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      window.clearTimeout(timeoutId);
+      image.onload = null;
+      image.onerror = null;
+      if (!sprite) {
+        image.removeAttribute("src");
+      }
+      resolve(sprite);
+    };
+
+    const timeoutId = window.setTimeout(() => finish(null), RESULT_SPRITE_TIMEOUT_MS);
+    image.decoding = "async";
+    image.onload = async () => {
+      try {
+        if (typeof image.decode === "function") {
+          await image.decode();
+        }
+        finish(image.naturalWidth > 0 ? image : null);
+      } catch {
+        finish(null);
+      }
+    };
+    image.onerror = () => finish(null);
+    image.src = result.src;
+  });
+}
+
 function setFlashOrigin() {
   const machineRect = machine.getBoundingClientRect();
   const originX = machineRect.left + machineRect.width * BALL_END_POINT.x;
@@ -654,6 +698,7 @@ async function drawGacha(mode = DEFAULT_DRAW_MODE) {
   currentDrawMode = mode;
   const isRedraw = machine.dataset.state === "result";
   const result = pickResult(mode);
+  const spritePromise = loadResultSprite(result);
   resultPanel.classList.remove("has-result", "is-entering");
   document.body.classList.remove("is-flashing", "is-whiteout-exiting");
 
@@ -671,11 +716,11 @@ async function drawGacha(mode = DEFAULT_DRAW_MODE) {
   machine.dataset.state = "opening";
   setFlashOrigin();
   await waitForNextPaint();
-  await wait(OPEN_BALL_PREVIEW_MS);
+  const [sprite] = await Promise.all([spritePromise, wait(OPEN_BALL_PREVIEW_MS)]);
   machine.dataset.state = "flash";
   document.body.classList.add("is-flashing");
   await wait(760);
-  renderResult(result, mode);
+  renderResult(result, mode, sprite);
   machine.dataset.state = "result";
   document.body.classList.remove("is-flashing");
   document.body.classList.add("is-whiteout-exiting");
@@ -697,8 +742,9 @@ async function init() {
     const urlResult = getResultFromUrl();
     if (urlResult) {
       lastApiNameByMode[DEFAULT_DRAW_MODE] = urlResult.apiName;
+      const sprite = await loadResultSprite(urlResult);
       machine.dataset.state = "result";
-      renderResult(urlResult, DEFAULT_DRAW_MODE);
+      renderResult(urlResult, DEFAULT_DRAW_MODE, sprite);
     }
   } catch (error) {
     console.error(error);

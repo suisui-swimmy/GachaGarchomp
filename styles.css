@@ -376,7 +376,7 @@ h1 {
   filter: drop-shadow(0 10px 0 rgba(41, 44, 24, 0.18));
 }
 
-.result-panel.has-result .result-sprite {
+.result-panel.has-result .result-sprite:not([hidden]) {
   display: block;
 }
 
