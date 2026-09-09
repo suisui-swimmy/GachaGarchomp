@@ -40,7 +40,7 @@ const DRAW_MODES = {
     chip: "全部",
   },
   new: {
-    chip: "M-C暫定新規",
+    chip: "新規追加(M-C)",
   },
 };
 
@@ -199,8 +199,8 @@ async function loadGachaPools() {
   const newCount = getPoolForMode("new").length;
 
   resultName.textContent = "準備OK";
-  resultText.textContent = `全部 ${allCount}種類 / 新規追加(M-C暫定) ${newCount}種類から抽選できます。`;
-  renderChips([`全部 ${allCount}種類`, `M-C暫定新規 ${newCount}種類`, "weight編集対応"]);
+  resultText.textContent = `全部 ${allCount}種類 / 新規追加(M-C) ${newCount}種類から抽選できます。`;
+  renderChips([`全部 ${allCount}種類`, `新規追加(M-C) ${newCount}種類`, "weight編集対応"]);
 }
 
 function getResultFromUrl() {

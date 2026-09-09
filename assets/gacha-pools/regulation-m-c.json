@@ -1,6 +1,6 @@
 {
   "regulation": "M-C",
-  "label": "レギュレーションM-C暫定",
+  "label": "レギュレーションM-C",
   "entries": [
     { "apiName": "absol-mega-z", "weight": 1 },
     { "apiName": "garchomp-mega-z", "weight": 1 },
